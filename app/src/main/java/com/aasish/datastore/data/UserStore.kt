@@ -31,7 +31,7 @@ class UserStore(private val context: Context) {
         preferences[STUDENT_ID_KEY] ?: ""
     }
 
-    suspend fun saveToken(username: String) {
+    suspend fun saveUser(username: String) {
         context.dataStore.edit { preferences ->
             preferences[USER_name_KEY] = username
         }

@@ -12,7 +12,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material.*
+//import androidx.compose.material.*
 import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
@@ -39,7 +39,6 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 class MainActivity : ComponentActivity() {
-    @OptIn(ExperimentalComposeUiApi::class)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
@@ -74,8 +73,8 @@ private fun Main() {
         mutableStateOf(TextFieldValue())
     }
     val store = UserStore(context)
-    val usernameText = store.getAccessToken.collectAsState(initial = "")
-    val emailText = store.getStudentId.collectAsState(initial = "")
+    val usernameText = store.getUserName.collectAsState(initial = "")
+    val emailText = store.getEmail.collectAsState(initial = "")
     val studentidText = store.getStudentId.collectAsState(initial = "")
 
     Column(
@@ -140,10 +139,10 @@ private fun Main() {
             Button(
                 onClick = {
                     CoroutineScope(Dispatchers.IO).launch {
-                        store.saveToken(usernameValue.value.text)
+                        store.saveUser(usernameValue.value.text)
                     }
                     CoroutineScope(Dispatchers.IO).launch {
-                        store.saveToken(emailValue.value.text)
+                        store.saveEmail(emailValue.value.text)
                     }
                     CoroutineScope(Dispatchers.IO).launch {
                         store.saveStudentId(studentIdValue.value.text)
