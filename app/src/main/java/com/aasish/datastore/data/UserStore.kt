@@ -11,23 +11,34 @@ import kotlinx.coroutines.flow.map
 
 class UserStore(private val context: Context) {
     companion object {
-        private val Context.dataStore: DataStore<Preferences> by preferencesDataStore("userToken")
-        private val USER_TOKEN_KEY = stringPreferencesKey("user_token")
+        private val Context.dataStore: DataStore<Preferences> by preferencesDataStore("username")
+        private val USER_name_KEY = stringPreferencesKey("user_name")
+
+        private val Context.dataEmail: DataStore<Preferences> by preferencesDataStore("email")
+        private val Email_KEY = stringPreferencesKey("email")
 
         private val Context.dataStudent: DataStore<Preferences> by preferencesDataStore("student_id")
         private val STUDENT_ID_KEY = stringPreferencesKey("student_id")
     }
 
-    val getAccessToken: Flow<String> = context.dataStore.data.map { preferences ->
-        preferences[USER_TOKEN_KEY] ?: ""
+    val getUserName: Flow<String> = context.dataStore.data.map { preferences ->
+        preferences[USER_name_KEY] ?: ""
+    }
+    val getEmail: Flow<String> = context.dataStore.data.map { preferences ->
+        preferences[Email_KEY] ?: ""
     }
     val getStudentId: Flow<String> = context.dataStudent.data.map { preferences ->
         preferences[STUDENT_ID_KEY] ?: ""
     }
 
-    suspend fun saveToken(token: String) {
+    suspend fun saveToken(username: String) {
         context.dataStore.edit { preferences ->
-            preferences[USER_TOKEN_KEY] = token
+            preferences[USER_name_KEY] = username
+        }
+    }
+    suspend fun saveEmail(email: String) {
+        context.dataStore.edit { preferences ->
+            preferences[Email_KEY] = email
         }
     }
     suspend fun saveStudentId(studentId: String) {

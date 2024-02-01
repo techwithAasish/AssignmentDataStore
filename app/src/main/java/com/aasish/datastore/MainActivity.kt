@@ -62,15 +62,21 @@ class MainActivity : ComponentActivity() {
 private fun Main() {
     val context = LocalContext.current
     val keyboardController = LocalSoftwareKeyboardController.current
-    val tokenValue = remember {
+
+    val usernameValue = remember {
         mutableStateOf(TextFieldValue())
     }
+    val emailValue = remember {
+        mutableStateOf(TextFieldValue())
+    }
+
     val studentIdValue = remember {
         mutableStateOf(TextFieldValue())
     }
     val store = UserStore(context)
-    val tokenText = store.getAccessToken.collectAsState(initial = "")
-    val studentText = store.getStudentId.collectAsState(initial = "")
+    val usernameText = store.getAccessToken.collectAsState(initial = "")
+    val emailText = store.getStudentId.collectAsState(initial = "")
+    val studentidText = store.getStudentId.collectAsState(initial = "")
 
     Column(
         modifier = Modifier.clickable { keyboardController?.hide() },
@@ -78,62 +84,81 @@ private fun Main() {
     ) {
         Spacer(modifier = Modifier.height(30.dp))
 
-        Text(text = "DataStorage Example", fontWeight = FontWeight.Bold)
+        Text(text = "DataStorage Assignment 1", fontWeight = FontWeight.Bold)
 
         Spacer(modifier = Modifier.height(15.dp))
 
-        Text(text = tokenText.value)
-        Text(text = studentText.value )
+        Text(text = usernameText.value)
+        Text(text = emailText.value)
+        Text(text = studentidText.value )
 
         Spacer(modifier = Modifier.height(15.dp))
 
         OutlinedTextField(
-            label = {Text("Token")},
-            value = tokenValue.value,
-            onValueChange = { tokenValue.value = it },
+            label = {Text("Username")},
+            value = usernameValue.value,
+            onValueChange = { usernameValue.value = it },
+        )
+//        Spacer(modifier = Modifier.height(30.dp))
+
+        OutlinedTextField(
+            label = {Text("Email")},
+            value = emailValue.value,
+            onValueChange = { emailValue.value = it },
         )
 
-        Spacer(modifier = Modifier.height(30.dp))
-
         OutlinedTextField(
-            label = {Text("Student Id")},
+            label = {Text("ID")},
             value = studentIdValue.value,
             onValueChange = { studentIdValue.value = it },
         )
 
+        Spacer(modifier = Modifier.height(30.dp))
+
         Row(
             horizontalArrangement = Arrangement.SpaceAround,
-            modifier = Modifier.fillMaxWidth().padding(8.dp)
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(8.dp)
         ){
             Button(
 
                 onClick = {
                     CoroutineScope(Dispatchers.IO).launch {
-                        store.saveToken(tokenValue.value.text)
+                        store.saveToken(usernameValue.value.text)
+                    }
+                    CoroutineScope(Dispatchers.IO).launch {
+                        store.saveToken(emailValue.value.text)
                     }
                     CoroutineScope(Dispatchers.IO).launch {
                         store.saveStudentId(studentIdValue.value.text)
                     }
                 }
             ) {
-                Text(text = "Save")
+                Text(text = "Load")
             }
             Button(
                 onClick = {
                     CoroutineScope(Dispatchers.IO).launch {
-                        store.saveToken(tokenValue.value.text)
+                        store.saveToken(usernameValue.value.text)
+                    }
+                    CoroutineScope(Dispatchers.IO).launch {
+                        store.saveToken(emailValue.value.text)
                     }
                     CoroutineScope(Dispatchers.IO).launch {
                         store.saveStudentId(studentIdValue.value.text)
                     }
                 }
             ) {
-                Text(text = "User ")
+                Text(text = "Save ")
             }
             Button(
                 onClick = {
                     CoroutineScope(Dispatchers.IO).launch {
-                        store.saveToken(tokenValue.value.text)
+                        store.saveToken(usernameValue.value.text)
+                    }
+                    CoroutineScope(Dispatchers.IO).launch {
+                        store.saveToken(emailValue.value.text)
                     }
                     CoroutineScope(Dispatchers.IO).launch {
                         store.saveStudentId(studentIdValue.value.text)
