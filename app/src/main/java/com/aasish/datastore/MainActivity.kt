@@ -121,22 +121,22 @@ private fun Main() {
                 .fillMaxWidth()
                 .padding(8.dp)
         ){
-            Button(
-
-                onClick = {
-                    CoroutineScope(Dispatchers.IO).launch {
-                        store.saveToken(usernameValue.value.text)
-                    }
-                    CoroutineScope(Dispatchers.IO).launch {
-                        store.saveToken(emailValue.value.text)
-                    }
-                    CoroutineScope(Dispatchers.IO).launch {
-                        store.saveStudentId(studentIdValue.value.text)
-                    }
-                }
-            ) {
-                Text(text = "Load")
-            }
+//            Button(
+//
+//                onClick = {
+//                    CoroutineScope(Dispatchers.IO).launch {
+//                        store.saveToken(usernameValue.value.text)
+//                    }
+//                    CoroutineScope(Dispatchers.IO).launch {
+//                        store.saveToken(emailValue.value.text)
+//                    }
+//                    CoroutineScope(Dispatchers.IO).launch {
+//                        store.saveStudentId(studentIdValue.value.text)
+//                    }
+//                }
+//            ) {
+//                Text(text = "Load")
+//            }
             Button(
                 onClick = {
                     CoroutineScope(Dispatchers.IO).launch {
@@ -152,21 +152,21 @@ private fun Main() {
             ) {
                 Text(text = "Save ")
             }
-            Button(
-                onClick = {
-                    CoroutineScope(Dispatchers.IO).launch {
-                        store.saveToken(usernameValue.value.text)
-                    }
-                    CoroutineScope(Dispatchers.IO).launch {
-                        store.saveToken(emailValue.value.text)
-                    }
-                    CoroutineScope(Dispatchers.IO).launch {
-                        store.saveStudentId(studentIdValue.value.text)
-                    }
-                }
-            ) {
-                Text(text = "Clear ")
-            }
+//            Button(
+//                onClick = {
+//                    CoroutineScope(Dispatchers.IO).launch {
+//                        store.saveToken(usernameValue.value.text)
+//                    }
+//                    CoroutineScope(Dispatchers.IO).launch {
+//                        store.saveToken(emailValue.value.text)
+//                    }
+//                    CoroutineScope(Dispatchers.IO).launch {
+//                        store.saveStudentId(studentIdValue.value.text)
+//                    }
+//                }
+//            ) {
+//                Text(text = "Clear ")
+//            }
 
         }
 
