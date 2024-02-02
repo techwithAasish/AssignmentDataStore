@@ -11,9 +11,12 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 //import androidx.compose.material.*
 import androidx.compose.material3.Button
+import androidx.compose.material3.Card
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
@@ -36,6 +39,7 @@ import com.aasish.datastore.data.UserStore
 import com.aasish.datastore.ui.theme.DataStoreTheme
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 
 class MainActivity : ComponentActivity() {
@@ -70,12 +74,10 @@ private fun Main() {
     }
 
     val studentIdValue = remember {
-        mutableStateOf(TextFieldValue())
+        val defaultStudentID = getId()
+        mutableStateOf(TextFieldValue(text = defaultStudentID))
     }
     val store = UserStore(context)
-    val usernameText = store.getUserName.collectAsState(initial = "")
-    val emailText = store.getEmail.collectAsState(initial = "")
-    val studentidText = store.getStudentId.collectAsState(initial = "")
 
     Column(
         modifier = Modifier.clickable { keyboardController?.hide() },
@@ -86,10 +88,6 @@ private fun Main() {
         Text(text = "DataStorage Assignment 1", fontWeight = FontWeight.Bold)
 
         Spacer(modifier = Modifier.height(15.dp))
-
-        Text(text = usernameText.value)
-        Text(text = emailText.value)
-        Text(text = studentidText.value )
 
         Spacer(modifier = Modifier.height(15.dp))
 
@@ -120,54 +118,69 @@ private fun Main() {
                 .fillMaxWidth()
                 .padding(8.dp)
         ){
-//            Button(
-//
-//                onClick = {
-//                    CoroutineScope(Dispatchers.IO).launch {
-//                        store.saveToken(usernameValue.value.text)
-//                    }
-//                    CoroutineScope(Dispatchers.IO).launch {
-//                        store.saveToken(emailValue.value.text)
-//                    }
-//                    CoroutineScope(Dispatchers.IO).launch {
-//                        store.saveStudentId(studentIdValue.value.text)
-//                    }
-//                }
-//            ) {
-//                Text(text = "Load")
-//            }
+            Button(
+
+                onClick = {
+                    CoroutineScope(Dispatchers.IO).launch {
+                        val loadedUserName = store.getUserName.first()
+                        val loadedEmail = store.getEmail.first()
+                        val loadedStudentId = store.getStudentId.first()
+
+
+                        usernameValue.value = TextFieldValue(loadedUserName)
+                        emailValue.value = TextFieldValue(loadedEmail)
+                        studentIdValue.value = TextFieldValue(loadedStudentId)
+                    }
+                }
+            ) {
+                Text(text = "Load")
+            }
             Button(
                 onClick = {
                     CoroutineScope(Dispatchers.IO).launch {
                         store.saveUser(usernameValue.value.text)
-                    }
-                    CoroutineScope(Dispatchers.IO).launch {
                         store.saveEmail(emailValue.value.text)
-                    }
-                    CoroutineScope(Dispatchers.IO).launch {
                         store.saveStudentId(studentIdValue.value.text)
                     }
                 }
             ) {
                 Text(text = "Save ")
             }
-//            Button(
-//                onClick = {
-//                    CoroutineScope(Dispatchers.IO).launch {
-//                        store.saveToken(usernameValue.value.text)
-//                    }
-//                    CoroutineScope(Dispatchers.IO).launch {
-//                        store.saveToken(emailValue.value.text)
-//                    }
-//                    CoroutineScope(Dispatchers.IO).launch {
-//                        store.saveStudentId(studentIdValue.value.text)
-//                    }
-//                }
-//            ) {
-//                Text(text = "Clear ")
-//            }
+            Button(
+                onClick = {
+                    CoroutineScope(Dispatchers.IO).launch {
+                        store.clearData()
+                    }
+                }
+            ) {
+                Text(text = "Clear ")
+            }
 
         }
 
+        Spacer(modifier = Modifier.height(100.dp))
+
+        Card(
+            modifier = Modifier
+                .width(300.dp)
+                .heightIn(min = 56.dp)
+        ) {
+            Column(
+                modifier = Modifier
+                    .padding(16.dp)
+            ) {
+                Text(text = "Aasish Mahato", fontWeight = FontWeight.Bold)
+                Text(text = "301373719", fontWeight = FontWeight.Bold)
+            }
+        }
+
     }
+
 }
+
+private fun getId(): String{
+    val studentID = "301373719"
+    return studentID.takeLast(3)
+}
+
+

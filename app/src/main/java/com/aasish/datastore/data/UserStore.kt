@@ -24,7 +24,7 @@ class UserStore(private val context: Context) {
     val getUserName: Flow<String> = context.dataStore.data.map { preferences ->
         preferences[USER_name_KEY] ?: ""
     }
-    val getEmail: Flow<String> = context.dataStore.data.map { preferences ->
+    val getEmail: Flow<String> = context.dataEmail.data.map { preferences ->
         preferences[Email_KEY] ?: ""
     }
     val getStudentId: Flow<String> = context.dataStudent.data.map { preferences ->
@@ -37,13 +37,25 @@ class UserStore(private val context: Context) {
         }
     }
     suspend fun saveEmail(email: String) {
-        context.dataStore.edit { preferences ->
+        context.dataEmail.edit { preferences ->
             preferences[Email_KEY] = email
         }
     }
     suspend fun saveStudentId(studentId: String) {
         context.dataStudent.edit { preferences ->
             preferences[STUDENT_ID_KEY] = studentId
+        }
+    }
+
+    suspend fun clearData(){
+        context.dataStore.edit { preferences ->
+            preferences.remove(USER_name_KEY)
+        }
+        context.dataEmail.edit { preferences ->
+            preferences.remove(Email_KEY)
+        }
+        context.dataStudent.edit { preferences ->
+            preferences.remove(STUDENT_ID_KEY)
         }
     }
 }
